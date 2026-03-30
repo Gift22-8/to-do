@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Productivity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Personal Productivity</h1>
+            <p class="subtitle">A daily personal diary</p>
+        </header>
+
+        <main class="grid">
+            <section class="card verse">
+                <h2><i class="fa-solid fa-book-open" style="color: var(--accent);"></i> Verse of the Day</h2>
+                <div class="input-row">
+                    <input id="verseInput" placeholder="Write a verse..." aria-label="Verse input">
+                    <button id="saveVerseBtn"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                </div>
+                <div id="verseContainer"></div>
+            </section>
+
+            <section class="card todo">
+                <h2><i class="fa-solid fa-list-check" style="color: var(--accent-2);"></i> To-Do List</h2>
+                <form id="taskForm" class="task-form" aria-label="Add task">
+                    <input id="taskInput" placeholder="Add a task" autocomplete="off">
+                    <button id="addTaskBtn" type="submit"><i class="fa-solid fa-plus"></i> Add</button>
+                </form>
+                <ul id="taskList" class="task-list" aria-live="polite"></ul>
+                <div class="controls">
+                    <button id="clearCompletedBtn"><i class="fa-solid fa-check-double"></i> Clear Completed</button>
+                    <button id="clearAllBtn"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+                </div>
+            </section>
+
+            <section class="card notes">
+                <h2><i class="fa-solid fa-apple-whole" style="color: #ffb74d;"></i> Food / Routine Notes</h2>
+                <form id="foodForm" class="task-form" aria-label="Add food note">
+                    <input id="foodInput" placeholder="Add food or routine..." autocomplete="off">
+                    <button id="addFoodBtn" type="submit"><i class="fa-solid fa-plus"></i> Add</button>
+                </form>
+                <ul id="foodList" class="task-list" aria-live="polite"></ul>
+            </section>
+
+            <section class="card reflection">
+                <h2><i class="fa-solid fa-moon" style="color: #64b5f6;"></i> Daily Reflection</h2>
+                <textarea id="dailyReflection" placeholder="How was your day?" rows="6"></textarea>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
