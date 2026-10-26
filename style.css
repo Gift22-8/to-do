@@ -51,7 +51,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
     text-align: center;
 }
 
@@ -71,6 +71,86 @@ header h1 {
     font-size: 1.1rem;
 }
 
+/* ============================================================================
+   Compact Productivity Dashboard
+   ============================================================================ */
+.dashboard-card {
+    margin-bottom: 24px;
+    padding: 18px 24px;
+    background: var(--card);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 1.5fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+}
+
+.stat-pending {
+    color: #93c5fd;
+}
+
+.stat-completed {
+    color: var(--accent-2);
+}
+
+.stat-overdue {
+    color: var(--danger);
+}
+
+.stat-progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 999px;
+    transition: width 0.4s ease-in-out;
+}
+
+/* ============================================================================
+   Main Grid & Cards
+   ============================================================================ */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
@@ -133,7 +213,6 @@ select option {
     color: #f8fafc;
 }
 
-/* Date picker calendar icon theme */
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(0.8);
     cursor: pointer;
@@ -187,7 +266,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
     padding: 14px;
@@ -252,7 +331,110 @@ button:hover {
     padding: 4px 0 0 2px;
 }
 
-/* Task List Items */
+/* ============================================================================
+   Search, Filter & Sort Toolbar
+   ============================================================================ */
+.filter-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.search-box input {
+    padding-left: 38px;
+    padding-right: 36px;
+    height: 40px;
+    font-size: 0.9rem;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    line-height: 1;
+}
+
+.clear-search-btn:hover {
+    color: var(--text);
+    background: transparent;
+    transform: none;
+    box-shadow: none;
+}
+
+.filter-controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-group label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.filter-group select {
+    padding: 6px 8px;
+    font-size: 0.82rem;
+    height: 36px;
+    border-radius: 8px;
+}
+
+.reset-filters-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+.reset-filters-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    border-color: var(--muted);
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============================================================================
+   Task List Items & Badges
+   ============================================================================ */
 .task-list {
     list-style: none;
     padding: 0;
@@ -404,6 +586,42 @@ button:hover {
     color: #fb7185;
 }
 
+/* Empty states */
+.empty-task-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--muted);
+    gap: 8px;
+}
+
+.empty-task-state i {
+    font-size: 2rem;
+    opacity: 0.5;
+    margin-bottom: 4px;
+}
+
+.empty-task-state p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.empty-task-state button {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.empty-task-state button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
 /* Original Food / Checklist Item */
 .checklist-item {
     display: flex;
@@ -474,7 +692,9 @@ button:hover {
     box-shadow: none;
 }
 
-/* Edit Modal */
+/* ============================================================================
+   Edit Modal
+   ============================================================================ */
 .modal {
     position: fixed;
     top: 0;
@@ -608,7 +828,9 @@ button:hover {
     background: var(--accent-hover);
 }
 
-/* Toast Notifications */
+/* ============================================================================
+   Toast Notifications
+   ============================================================================ */
 .toast {
     position: fixed;
     bottom: 24px;
@@ -649,10 +871,25 @@ button:hover {
     border-left: 4px solid var(--accent);
 }
 
-/* Responsive adjustments */
+/* ============================================================================
+   Responsive Layout
+   ============================================================================ */
 @media (max-width: 860px) {
     .grid {
         grid-template-columns: 1fr;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+    .stat-progress-item {
+        grid-column: span 2;
+    }
+    .filter-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+    .reset-filters-btn {
+        grid-column: span 2;
     }
     .container {
         padding: 0;
@@ -665,5 +902,23 @@ button:hover {
     }
     .form-row {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .filter-controls {
+        grid-template-columns: 1fr;
+    }
+    .reset-filters-btn {
+        grid-column: span 1;
+    }
+    .card {
+        padding: 18px 16px;
     }
 }

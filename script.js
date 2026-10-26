@@ -1,9 +1,18 @@
 // Personal Productivity Application
-// Core Modules: Safe Storage, Task CRUD, Verse of the Day, Food Notes, Daily Reflection
+// Core Modules: Safe Storage, Task CRUD, Productivity Dashboard, Search/Filter/Sort,
+// Personal Features (Verse of the Day, Food Notes, Daily Reflection)
 
 // ============================================================================
 // 1. DOM Elements
 // ============================================================================
+
+// --- Dashboard Elements ---
+const statTotal = document.getElementById('statTotal');
+const statPending = document.getElementById('statPending');
+const statCompleted = document.getElementById('statCompleted');
+const statOverdue = document.getElementById('statOverdue');
+const statPercentage = document.getElementById('statPercentage');
+const progressBarFill = document.getElementById('progressBarFill');
 
 // --- Task Form & Controls ---
 const taskForm = document.getElementById('taskForm');
@@ -15,6 +24,15 @@ const taskFormFeedback = document.getElementById('taskFormFeedback');
 const taskList = document.getElementById('taskList');
 const clearCompletedBtn = document.getElementById('clearCompletedBtn');
 const clearAllBtn = document.getElementById('clearAllBtn');
+
+// --- Search, Filter & Sort Elements ---
+const searchInput = document.getElementById('searchInput');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
+const filterStatus = document.getElementById('filterStatus');
+const filterCategory = document.getElementById('filterCategory');
+const filterPriority = document.getElementById('filterPriority');
+const sortBy = document.getElementById('sortBy');
+const resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
 // --- Edit Task Modal ---
 const editModal = document.getElementById('editModal');
@@ -55,10 +73,20 @@ const VERSE_KEY = 'prod-verse-v2';
 const FOOD_KEY = 'prod-food-v2';
 const REFLECT_KEY = 'prod-reflect-v1';
 
+// Canonical application state
 let tasks = [];
 let verses = [];
 let foods = [];
 let toastTimeoutId = null;
+
+// Search and filter state (kept strictly separate from tasks data)
+const filterState = {
+    search: '',
+    status: 'all',
+    category: 'all',
+    priority: 'all',
+    sortBy: 'newest'
+};
 
 // ============================================================================
 // 3. Utility & Helper Functions
@@ -151,7 +179,6 @@ function normalizeTask(rawItem) {
     const dueDate = typeof rawItem.dueDate === 'string' ? rawItem.dueDate : '';
     const createdAt = typeof rawItem.createdAt === 'number' ? rawItem.createdAt : (typeof rawItem.id === 'number' ? rawItem.id : Date.now());
 
-    // Fallback: don't store completely empty tasks
     if (!text) return null;
 
     return {
@@ -211,7 +238,132 @@ function saveTasks() {
 }
 
 // ============================================================================
-// 5. Task CRUD Handlers
+// 5. Productivity Dashboard Calculations
+// ============================================================================
+
+/**
+ * Calculates current productivity statistics from canonical task array.
+ * Pure function: Does not mutate the tasks array.
+ * @param {Array} taskList
+ * @returns {Object}
+ */
+function calculateTaskStats(taskList) {
+    const total = taskList.length;
+    const completed = taskList.filter(t => t.completed).length;
+    const pending = total - completed;
+    const overdue = taskList.filter(t => isTaskOverdue(t.dueDate, t.completed)).length;
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    return { total, completed, pending, overdue, percentage };
+}
+
+/**
+ * Updates the dashboard UI with calculated statistics.
+ */
+function updateDashboardStats() {
+    const stats = calculateTaskStats(tasks);
+
+    if (statTotal) statTotal.textContent = String(stats.total);
+    if (statPending) statPending.textContent = String(stats.pending);
+    if (statCompleted) statCompleted.textContent = String(stats.completed);
+    if (statOverdue) statOverdue.textContent = String(stats.overdue);
+    if (statPercentage) statPercentage.textContent = `${stats.percentage}%`;
+
+    if (progressBarFill) {
+        progressBarFill.style.width = `${stats.percentage}%`;
+        const container = progressBarFill.parentElement;
+        if (container) {
+            container.setAttribute('aria-valuenow', String(stats.percentage));
+        }
+    }
+}
+
+// ============================================================================
+// 6. Search, Filter & Sort Engine
+// ============================================================================
+
+/**
+ * Returns a filtered and sorted shallow copy of the task array.
+ * Pure function: Canonical tasks array is never mutated.
+ * @param {Array} taskList
+ * @param {Object} state
+ * @returns {Array}
+ */
+function getFilteredTasks(taskList, state) {
+    let result = [...taskList];
+
+    // 1. Text Search (title search)
+    if (state.search) {
+        const query = state.search.toLowerCase();
+        result = result.filter(t => t.text.toLowerCase().includes(query));
+    }
+
+    // 2. Status Filter
+    if (state.status === 'pending') {
+        result = result.filter(t => !t.completed);
+    } else if (state.status === 'completed') {
+        result = result.filter(t => t.completed);
+    } else if (state.status === 'overdue') {
+        result = result.filter(t => isTaskOverdue(t.dueDate, t.completed));
+    }
+
+    // 3. Category Filter
+    if (state.category !== 'all') {
+        result = result.filter(t => t.category === state.category);
+    }
+
+    // 4. Priority Filter
+    if (state.priority !== 'all') {
+        result = result.filter(t => t.priority === state.priority);
+    }
+
+    // 5. Sorting
+    const priorityWeight = { high: 3, medium: 2, low: 1 };
+    result.sort((a, b) => {
+        if (state.sortBy === 'dueDate') {
+            // Tasks with due date come first; sort ascending
+            if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate);
+            if (a.dueDate) return -1;
+            if (b.dueDate) return 1;
+            return 0;
+        }
+        if (state.sortBy === 'priority') {
+            const weightDiff = (priorityWeight[b.priority] || 0) - (priorityWeight[a.priority] || 0);
+            if (weightDiff !== 0) return weightDiff;
+            return (b.createdAt || b.id) - (a.createdAt || a.id);
+        }
+        if (state.sortBy === 'alphabetical') {
+            return a.text.localeCompare(b.text, undefined, { sensitivity: 'base' });
+        }
+        // Default: 'newest' (most recently created first)
+        return (b.createdAt || b.id) - (a.createdAt || a.id);
+    });
+
+    return result;
+}
+
+/**
+ * Resets all filter controls and search inputs to default values.
+ */
+function resetFilters() {
+    filterState.search = '';
+    filterState.status = 'all';
+    filterState.category = 'all';
+    filterState.priority = 'all';
+    filterState.sortBy = 'newest';
+
+    if (searchInput) searchInput.value = '';
+    if (clearSearchBtn) clearSearchBtn.hidden = true;
+    if (filterStatus) filterStatus.value = 'all';
+    if (filterCategory) filterCategory.value = 'all';
+    if (filterPriority) filterPriority.value = 'all';
+    if (sortBy) sortBy.value = 'newest';
+
+    renderTasks();
+}
+
+// ============================================================================
+// 7. Task CRUD Handlers
 // ============================================================================
 
 /**
@@ -386,7 +538,7 @@ function clearAllTasks() {
 }
 
 // ============================================================================
-// 6. Task Rendering
+// 8. Task Rendering
 // ============================================================================
 
 /**
@@ -484,29 +636,54 @@ function createTaskElement(task) {
 }
 
 /**
- * Render all tasks into the DOM.
+ * Render tasks into the DOM using active search, filter, and sorting state.
+ * Also keeps dashboard statistics updated.
  */
 function renderTasks() {
+    // Keep dashboard stats in sync with canonical tasks data
+    updateDashboardStats();
+
     taskList.innerHTML = '';
 
+    // If master task array is empty
     if (tasks.length === 0) {
         const emptyLi = document.createElement('li');
-        emptyLi.className = 'task-item';
-        emptyLi.style.justifyContent = 'center';
-        emptyLi.style.color = 'var(--muted)';
-        emptyLi.style.padding = '24px 16px';
-        emptyLi.textContent = 'No tasks yet. Add one above to get started!';
+        emptyLi.className = 'empty-task-state';
+        emptyLi.innerHTML = `
+            <i class="fa-solid fa-clipboard-check"></i>
+            <p>No tasks yet. Add one above to get started!</p>
+        `;
         taskList.appendChild(emptyLi);
         return;
     }
 
-    tasks.forEach(task => {
+    // Apply filtering and sorting
+    const visibleTasks = getFilteredTasks(tasks, filterState);
+
+    // If filters returned zero matching tasks
+    if (visibleTasks.length === 0) {
+        const noMatchLi = document.createElement('li');
+        noMatchLi.className = 'empty-task-state';
+        noMatchLi.innerHTML = `
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+            <p>No tasks match your current filters.</p>
+        `;
+        const resetBtn = document.createElement('button');
+        resetBtn.type = 'button';
+        resetBtn.innerHTML = '<i class="fa-solid fa-rotate-left"></i> Reset Filters';
+        resetBtn.addEventListener('click', resetFilters);
+        noMatchLi.appendChild(resetBtn);
+        taskList.appendChild(noMatchLi);
+        return;
+    }
+
+    visibleTasks.forEach(task => {
         taskList.appendChild(createTaskElement(task));
     });
 }
 
 // ============================================================================
-// 7. Personal Features: Verse, Food, Daily Reflection (Preserved Intact)
+// 9. Personal Features: Verse, Food, Daily Reflection (Preserved Intact)
 // ============================================================================
 
 // --- Generic List Handler for Food / Routine Items ---
@@ -660,7 +837,7 @@ function saveReflection() {
 }
 
 // ============================================================================
-// 8. Event Listeners & Keyboard Accessibility
+// 10. Event Listeners & Keyboard Accessibility
 // ============================================================================
 
 // --- Main Task Form ---
@@ -678,6 +855,59 @@ taskInput.addEventListener('input', () => {
         setFormFeedback(taskFormFeedback, '');
     }
 });
+
+// --- Search, Filter & Sort Events ---
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        filterState.search = searchInput.value.trim();
+        if (clearSearchBtn) {
+            clearSearchBtn.hidden = !searchInput.value;
+        }
+        renderTasks();
+    });
+}
+
+if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearSearchBtn.hidden = true;
+        filterState.search = '';
+        searchInput.focus();
+        renderTasks();
+    });
+}
+
+if (filterStatus) {
+    filterStatus.addEventListener('change', () => {
+        filterState.status = filterStatus.value;
+        renderTasks();
+    });
+}
+
+if (filterCategory) {
+    filterCategory.addEventListener('change', () => {
+        filterState.category = filterCategory.value;
+        renderTasks();
+    });
+}
+
+if (filterPriority) {
+    filterPriority.addEventListener('change', () => {
+        filterState.priority = filterPriority.value;
+        renderTasks();
+    });
+}
+
+if (sortBy) {
+    sortBy.addEventListener('change', () => {
+        filterState.sortBy = sortBy.value;
+        renderTasks();
+    });
+}
+
+if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener('click', resetFilters);
+}
 
 // --- Edit Modal Events ---
 editTaskForm.addEventListener('submit', (e) => {
@@ -711,7 +941,7 @@ foodForm.addEventListener('submit', (e) => {
 dailyReflection.addEventListener('input', saveReflection);
 
 // ============================================================================
-// 9. Application Initialization
+// 11. Application Initialization
 // ============================================================================
 
 function initializeApp() {
