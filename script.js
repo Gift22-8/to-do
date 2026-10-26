@@ -1005,8 +1005,33 @@ dailyReflection.addEventListener('input', saveReflection);
 // 12. Application Initialization
 // ============================================================================
 
+/**
+ * Updates the header greeting and date display based on local time.
+ */
+function updateGreetingAndDate() {
+    const greetingEl = document.getElementById('greetingText');
+    const dateEl = document.getElementById('currentDateDisplay');
+
+    const now = new Date();
+    const hours = now.getHours();
+    let greeting = 'Welcome back';
+    if (hours < 12) greeting = 'Good morning';
+    else if (hours < 18) greeting = 'Good afternoon';
+    else greeting = 'Good evening';
+
+    if (greetingEl) greetingEl.textContent = greeting;
+    if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString(undefined, {
+            weekday: 'long',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+}
+
 function initializeApp() {
     loadTheme();
+    updateGreetingAndDate();
     loadTasks();
     loadVerses();
     loadFoods();

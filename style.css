@@ -1,229 +1,426 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ============================================================================
-   Design Tokens & Theme Variables
+   1. Design Tokens & Color Palettes
    ============================================================================ */
 
-/* Dark Theme (Default) */
+/* Dark Theme (Primary Visual Experience) */
 :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --card-hover: #243247;
-    --muted: #94a3b8;
-    --accent: #8b5cf6;
-    --accent-hover: #7c3aed;
-    --accent-2: #14b8a6;
-    --accent-2-hover: #0d9488;
-    --danger: #f43f5e;
-    --danger-hover: #e11d48;
-    --text: #f8fafc;
-    --border: rgba(255, 255, 255, 0.08);
+    --bg-main: #0B0D17;
+    --bg-secondary: #101321;
+    --surface: #15192A;
+    --surface-elevated: #1B2035;
+    --surface-hover: #21273F;
 
-    /* Priority & Status Colors */
-    --priority-high: #f43f5e;
-    --priority-medium: #f59e0b;
-    --priority-low: #10b981;
-    --overdue-bg: rgba(244, 63, 94, 0.15);
-    --overdue-text: #fda4af;
+    --accent: #8B7CFF;
+    --accent-hover: #7A69FA;
+    --accent-secondary: #A99CFF;
+    --accent-subtle: rgba(139, 124, 255, 0.12);
+    --accent-glow: rgba(139, 124, 255, 0.22);
 
-    /* Theme-specific element colors */
-    --input-bg: rgba(15, 23, 42, 0.6);
-    --select-bg: #0f172a;
-    --select-option-bg: #1e293b;
-    --modal-bg: #1e293b;
-    --modal-backdrop: rgba(15, 23, 42, 0.75);
-    --item-bg: rgba(255, 255, 255, 0.03);
-    --item-hover-bg: rgba(255, 255, 255, 0.05);
-    --progress-track: rgba(255, 255, 255, 0.08);
+    --text-primary: #F3F4FA;
+    --text-secondary: #A1A6BA;
+    --text-muted: #6B7288;
+
+    --border: #282D43;
+    --border-subtle: rgba(40, 45, 67, 0.6);
+    --border-focus: #8B7CFF;
+
+    /* Semantic Status Indicators */
+    --success: #52D6A0;
+    --success-bg: rgba(82, 214, 160, 0.12);
+    --warning: #F4C66A;
+    --warning-bg: rgba(244, 198, 106, 0.12);
+    --error: #FF7285;
+    --error-bg: rgba(255, 114, 133, 0.12);
+
+    /* Priority Colors */
+    --prio-high: #FF7285;
+    --prio-high-bg: rgba(255, 114, 133, 0.14);
+    --prio-med: #F4C66A;
+    --prio-med-bg: rgba(244, 198, 106, 0.14);
+    --prio-low: #52D6A0;
+    --prio-low-bg: rgba(82, 214, 160, 0.14);
+
+    /* Category Badges */
+    --cat-personal: #8B7CFF;
+    --cat-personal-bg: rgba(139, 124, 255, 0.14);
+    --cat-univ: #38BDF8;
+    --cat-univ-bg: rgba(56, 189, 248, 0.14);
+    --cat-work: #A78BFA;
+    --cat-work-bg: rgba(167, 139, 250, 0.14);
+    --cat-health: #34D399;
+    --cat-health-bg: rgba(52, 211, 153, 0.14);
+
+    /* Radii & Shadows */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 9999px;
+
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.25);
+    --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.28);
+    --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+    --progress-track: rgba(255, 255, 255, 0.06);
+    --backdrop-overlay: rgba(11, 13, 23, 0.78);
 }
 
-/* Light Theme */
+/* Light Theme (Complementary, Intentional) */
 [data-theme="light"] {
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --card-hover: #f1f5f9;
-    --muted: #64748b;
-    --accent: #7c3aed;
-    --accent-hover: #6d28d9;
-    --accent-2: #0d9488;
-    --accent-2-hover: #0f766e;
-    --danger: #e11d48;
-    --danger-hover: #be123c;
-    --text: #0f172a;
-    --border: rgba(15, 23, 42, 0.1);
+    --bg-main: #F4F6FB;
+    --bg-secondary: #EBEFF7;
+    --surface: #FFFFFF;
+    --surface-elevated: #F8FAFE;
+    --surface-hover: #F0F4FC;
 
-    /* Priority & Status Colors (adjusted contrast) */
-    --priority-high: #e11d48;
-    --priority-medium: #d97706;
-    --priority-low: #059669;
-    --overdue-bg: rgba(225, 29, 72, 0.12);
-    --overdue-text: #be123c;
+    --accent: #6C5CE7;
+    --accent-hover: #5A49D8;
+    --accent-secondary: #8B7CFF;
+    --accent-subtle: rgba(108, 92, 231, 0.1);
+    --accent-glow: rgba(108, 92, 231, 0.18);
 
-    /* Theme-specific element colors */
-    --input-bg: #f8fafc;
-    --select-bg: #ffffff;
-    --select-option-bg: #ffffff;
-    --modal-bg: #ffffff;
-    --modal-backdrop: rgba(15, 23, 42, 0.45);
-    --item-bg: #f8fafc;
-    --item-hover-bg: #f1f5f9;
-    --progress-track: rgba(15, 23, 42, 0.08);
+    --text-primary: #121626;
+    --text-secondary: #5E647D;
+    --text-muted: #8F96AB;
+
+    --border: #DDE2EE;
+    --border-subtle: #E8ECF5;
+    --border-focus: #6C5CE7;
+
+    /* Semantic Status Indicators */
+    --success: #059669;
+    --success-bg: rgba(5, 150, 105, 0.1);
+    --warning: #D97706;
+    --warning-bg: rgba(217, 119, 6, 0.1);
+    --error: #E11D48;
+    --error-bg: rgba(225, 29, 72, 0.1);
+
+    /* Priority Colors */
+    --prio-high: #E11D48;
+    --prio-high-bg: rgba(225, 29, 72, 0.1);
+    --prio-med: #D97706;
+    --prio-med-bg: rgba(217, 119, 6, 0.1);
+    --prio-low: #059669;
+    --prio-low-bg: rgba(5, 150, 105, 0.1);
+
+    /* Category Badges */
+    --cat-personal: #6C5CE7;
+    --cat-personal-bg: rgba(108, 92, 231, 0.1);
+    --cat-univ: #0284C7;
+    --cat-univ-bg: rgba(2, 132, 199, 0.1);
+    --cat-work: #7C3AED;
+    --cat-work-bg: rgba(124, 58, 237, 0.1);
+    --cat-health: #059669;
+    --cat-health-bg: rgba(5, 150, 105, 0.1);
+
+    --shadow-sm: 0 1px 3px rgba(18, 22, 38, 0.06);
+    --shadow-card: 0 4px 14px rgba(18, 22, 38, 0.06);
+    --shadow-elevated: 0 12px 28px rgba(18, 22, 38, 0.12);
+
+    --progress-track: rgba(18, 22, 38, 0.08);
+    --backdrop-overlay: rgba(18, 22, 38, 0.45);
 }
 
+/* ============================================================================
+   2. Reset & Global Styles
+   ============================================================================ */
 * {
     box-sizing: border-box;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background: var(--bg);
-    background-image: radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.12), transparent 25%),
-                      radial-gradient(circle at 85% 30%, rgba(20, 184, 166, 0.12), transparent 25%);
-    background-attachment: fixed;
-    color: var(--text);
-    margin: 0;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 36px 20px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.container {
+/* Subtle background accent glow */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 20%;
+    width: 60%;
+    height: 380px;
+    background: radial-gradient(ellipse at 50% 0%, var(--accent-subtle), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.app-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-container {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Accessible focus styling */
+:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* ============================================================================
-   Header & Theme Switcher
+   3. Refined Application Header
    ============================================================================ */
-header {
+.app-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 14px 0;
     margin-bottom: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
 }
 
-.header-top {
+.header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    box-shadow: 0 4px 10px var(--accent-glow);
+}
+
+.brand-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.brand-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.header-center {
+    display: flex;
     align-items: center;
 }
 
-.header-titles {
-    flex: 1;
+.greeting-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding-left: 42px; /* Balance theme toggle button width for true center */
 }
 
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(to right, #f8fafc, #94a3b8);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.greeting-text {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
-[data-theme="light"] header h1 {
-    background: linear-gradient(to right, #0f172a, #475569);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.greeting-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 400;
 }
 
-.subtitle {
-    margin: 6px 0 0 0;
-    color: var(--muted);
-    font-size: 1.05rem;
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .theme-toggle-btn {
-    background: rgba(255, 255, 255, 0.05);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
     border: 1px solid var(--border);
-    color: #fcd34d;
-    font-size: 1.15rem;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
+    color: var(--text-primary);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    flex-shrink: 0;
+    font-size: 1.05rem;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .theme-toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: rotate(20deg) scale(1.05);
+    background: var(--surface-hover);
+    border-color: var(--accent);
+    transform: rotate(15deg) scale(1.05);
 }
 
-[data-theme="light"] .theme-toggle-btn {
-    background: #f1f5f9;
-    color: #6366f1;
+.theme-toggle-btn #themeIcon {
+    color: var(--warning);
 }
 
-[data-theme="light"] .theme-toggle-btn:hover {
-    background: #e2e8f0;
+[data-theme="light"] .theme-toggle-btn #themeIcon {
+    color: var(--accent);
 }
 
 /* ============================================================================
-   Compact Productivity Dashboard
+   4. Common Card Styles
+   ============================================================================ */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    border-color: rgba(139, 124, 255, 0.25);
+}
+
+/* ============================================================================
+   5. Compact Productivity Dashboard Strip
    ============================================================================ */
 .dashboard-card {
-    margin-bottom: 24px;
-    padding: 18px 24px;
-    background: var(--card);
+    padding: 16px 20px;
+    background: var(--surface);
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr) 1.5fr;
+    grid-template-columns: repeat(4, 1fr) 1.6fr;
     gap: 16px;
     align-items: center;
 }
 
-.stat-item {
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+}
+
+.stat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.stat-total .stat-icon-wrap {
+    background: var(--accent-subtle);
+    color: var(--accent);
+}
+
+.stat-pending .stat-icon-wrap {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+
+.stat-completed .stat-icon-wrap {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.stat-overdue .stat-icon-wrap {
+    background: var(--error-bg);
+    color: var(--error);
+}
+
+.stat-content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    min-width: 0;
 }
 
 .stat-label {
     font-size: 0.72rem;
     font-weight: 600;
-    color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    color: var(--text-secondary);
 }
 
 .stat-value {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: var(--text);
-    line-height: 1.1;
+    line-height: 1.2;
+    color: var(--text-primary);
 }
 
-.stat-pending {
-    color: #60a5fa;
+.stat-pending .stat-value {
+    color: var(--warning);
 }
 
-[data-theme="light"] .stat-pending {
-    color: #2563eb;
+.stat-completed .stat-value {
+    color: var(--success);
 }
 
-.stat-completed {
-    color: var(--accent-2);
+.stat-overdue .stat-value {
+    color: var(--error);
 }
 
-.stat-overdue {
-    color: var(--danger);
-}
-
-.stat-progress-item {
-    display: flex;
+.stat-progress-card {
     flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
     gap: 8px;
+    background: var(--surface-elevated);
 }
 
 .stat-progress-header {
@@ -232,87 +429,129 @@ header h1 {
     align-items: baseline;
 }
 
+.stat-percentage {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
 .progress-bar-container {
     width: 100%;
-    height: 10px;
+    height: 8px;
     background: var(--progress-track);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     overflow: hidden;
-    position: relative;
 }
 
 .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    border-radius: 999px;
-    transition: width 0.4s ease-in-out;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    border-radius: var(--radius-pill);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ============================================================================
-   Main Grid & Cards
+   6. Asymmetric Workspace Layout
    ============================================================================ */
-.grid {
+.workspace-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
     gap: 24px;
+    align-items: start;
 }
 
-.card {
-    background: var(--card);
+/* Primary Column: Task Management Center */
+.workspace-primary {
     padding: 24px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
+    gap: 20px;
 }
 
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 20px -4px rgba(0, 0, 0, 0.15);
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.card h2 {
-    margin: 0 0 16px 0;
-    font-size: 1.25rem;
+.section-title-wrap h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--text);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
 }
 
-.input-row {
+.section-icon {
+    color: var(--accent);
+    font-size: 1.1rem;
+}
+
+.section-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* ============================================================================
+   7. Enhanced Task Composer (Form)
+   ============================================================================ */
+.task-form-enhanced {
     display: flex;
+    flex-direction: column;
     gap: 12px;
+    padding: 16px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.task-input-group {
+    display: flex;
+    gap: 10px;
 }
 
 input[type='text'], input[type='date'], input, select, textarea {
     width: 100%;
-    padding: 12px 14px;
-    border-radius: 12px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--border);
-    background: var(--input-bg);
-    color: var(--text);
-    outline: none;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.25);
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--text-muted);
 }
 
 select {
     cursor: pointer;
-    background-color: var(--select-bg);
+    background-color: var(--bg-secondary);
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A1A6BA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    padding-right: 32px;
 }
 
 select option {
-    background-color: var(--select-option-bg);
-    color: var(--text);
+    background-color: var(--surface-elevated);
+    color: var(--text-primary);
 }
 
+/* Native date picker icon theme */
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(0.8);
     cursor: pointer;
@@ -322,75 +561,37 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     filter: none;
 }
 
-textarea {
-    resize: vertical;
-    flex: 1;
-}
-
 button {
     background: var(--accent);
-    color: white;
+    color: #FFFFFF;
     border: none;
-    padding: 10px 16px;
-    border-radius: 12px;
-    cursor: pointer;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
     font-weight: 600;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-family: inherit;
-    font-size: 0.95rem;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 button:hover {
     background: var(--accent-hover);
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(139, 92, 246, 0.25);
+    box-shadow: 0 4px 12px var(--accent-glow);
 }
 
-/* Original simple form for food / routine */
-.task-form {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.task-form button {
-    background: var(--accent-2);
-}
-
-.task-form button:hover {
-    background: var(--accent-2-hover);
-    box-shadow: 0 6px 14px rgba(20, 184, 166, 0.25);
-}
-
-/* Enhanced To-Do Form */
-.task-form-enhanced {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 16px;
-    background: rgba(125, 125, 125, 0.04);
-    border: 1px solid var(--border);
-    padding: 14px;
-    border-radius: 14px;
-}
-
-.task-input-group {
-    display: flex;
-    gap: 10px;
+button:active {
+    transform: translateY(0);
 }
 
 .task-input-group button {
-    background: var(--accent-2);
     white-space: nowrap;
-    padding: 10px 18px;
-}
-
-.task-input-group button:hover {
-    background: var(--accent-2-hover);
-    box-shadow: 0 6px 14px rgba(20, 184, 166, 0.25);
+    padding: 0 20px;
+    flex-shrink: 0;
 }
 
 .task-meta-inputs {
@@ -406,47 +607,42 @@ button:hover {
 }
 
 .meta-field label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
     gap: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
 }
 
 .meta-field select, .meta-field input {
     padding: 8px 10px;
-    font-size: 0.88rem;
-    border-radius: 8px;
+    font-size: 0.85rem;
 }
 
 .form-feedback {
     font-size: 0.82rem;
-    padding: 0;
-    min-height: 0;
-    color: var(--danger);
+    color: var(--error);
     font-weight: 500;
-    transition: all 0.2s;
 }
 
 .form-feedback:not(:empty) {
-    padding: 4px 0 0 2px;
+    padding-top: 4px;
 }
 
 /* ============================================================================
-   Search, Filter & Sort Toolbar
+   8. Search, Filter & Sort Toolbar
    ============================================================================ */
 .filter-toolbar {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 16px;
-    padding: 12px;
-    background: rgba(125, 125, 125, 0.03);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    padding: 12px 14px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
 }
 
 .search-box {
@@ -458,32 +654,32 @@ button:hover {
 .search-icon {
     position: absolute;
     left: 14px;
-    color: var(--muted);
-    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-size: 0.88rem;
     pointer-events: none;
 }
 
 .search-box input {
     padding-left: 38px;
     padding-right: 36px;
-    height: 40px;
-    font-size: 0.9rem;
+    height: 38px;
+    font-size: 0.88rem;
 }
 
 .clear-search-btn {
     position: absolute;
-    right: 10px;
+    right: 8px;
     background: transparent;
     border: none;
-    color: var(--muted);
-    font-size: 1.2rem;
+    color: var(--text-muted);
+    font-size: 1.25rem;
     cursor: pointer;
-    padding: 2px 6px;
+    padding: 2px 8px;
     line-height: 1;
 }
 
 .clear-search-btn:hover {
-    color: var(--text);
+    color: var(--text-primary);
     background: transparent;
     transform: none;
     box-shadow: none;
@@ -505,72 +701,73 @@ button:hover {
 .filter-group label {
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
 }
 
 .filter-group select {
     padding: 6px 8px;
+    height: 34px;
     font-size: 0.82rem;
-    height: 36px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
 }
 
 .reset-filters-btn {
     background: transparent;
     border: 1px solid var(--border);
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 0.82rem;
-    height: 36px;
+    height: 34px;
     padding: 0 12px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     white-space: nowrap;
 }
 
 .reset-filters-btn:hover {
-    background: rgba(125, 125, 125, 0.1);
-    color: var(--text);
-    border-color: var(--muted);
+    background: var(--surface-hover);
+    color: var(--text-primary);
+    border-color: var(--accent);
     transform: none;
     box-shadow: none;
 }
 
 /* ============================================================================
-   Task List Items & Badges
+   9. Task List & Items
    ============================================================================ */
 .task-list {
     list-style: none;
-    padding: 0;
-    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    flex: 1;
+    min-height: 80px;
 }
 
 .task-item {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    background: var(--item-bg);
-    border: 1px solid var(--border);
+    padding: 13px 16px;
+    border-radius: var(--radius-md);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .task-item:hover {
-    background: var(--item-hover-bg);
-    border-color: rgba(125, 125, 125, 0.25);
+    border-color: var(--border);
+    background: var(--surface-hover);
+    transform: translateY(-1px);
 }
 
 .task-item input[type='checkbox'] {
     width: 20px;
     height: 20px;
     margin-top: 3px;
-    accent-color: var(--accent-2);
+    accent-color: var(--accent);
     cursor: pointer;
     flex-shrink: 0;
+    border-radius: 4px;
 }
 
 .task-main {
@@ -583,14 +780,16 @@ button:hover {
 
 .task-text {
     font-size: 0.95rem;
-    line-height: 1.4;
+    line-height: 1.45;
     word-break: break-word;
-    color: var(--text);
+    color: var(--text-primary);
+    font-weight: 500;
 }
 
 .task-item.completed .task-text {
     opacity: 0.55;
     text-decoration: line-through;
+    color: var(--text-muted);
 }
 
 .task-badges {
@@ -603,53 +802,52 @@ button:hover {
 .badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     font-size: 0.72rem;
     font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 6px;
-    text-transform: capitalize;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
     letter-spacing: 0.02em;
+    text-transform: capitalize;
 }
 
+/* Category Badges */
 .badge-category {
-    background: rgba(139, 92, 246, 0.12);
-    color: #7c3aed;
-    border: 1px solid rgba(139, 92, 246, 0.25);
+    background: var(--cat-personal-bg);
+    color: var(--cat-personal);
+    border: 1px solid rgba(139, 124, 255, 0.25);
 }
 
-[data-theme="dark"] .badge-category {
-    color: #c4b5fd;
-}
-
+/* Priority Badges */
 .badge-priority-high {
-    background: rgba(244, 63, 94, 0.12);
-    color: var(--priority-high);
-    border: 1px solid rgba(244, 63, 94, 0.25);
+    background: var(--prio-high-bg);
+    color: var(--prio-high);
+    border: 1px solid rgba(255, 114, 133, 0.25);
 }
 
 .badge-priority-medium {
-    background: rgba(245, 158, 11, 0.12);
-    color: var(--priority-medium);
-    border: 1px solid rgba(245, 158, 11, 0.25);
+    background: var(--prio-med-bg);
+    color: var(--prio-med);
+    border: 1px solid rgba(244, 198, 106, 0.25);
 }
 
 .badge-priority-low {
-    background: rgba(16, 185, 129, 0.12);
-    color: var(--priority-low);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    background: var(--prio-low-bg);
+    color: var(--prio-low);
+    border: 1px solid rgba(82, 214, 160, 0.25);
 }
 
+/* Due Date Badges */
 .badge-due {
-    background: rgba(148, 163, 184, 0.12);
-    color: var(--muted);
-    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(161, 166, 186, 0.1);
+    color: var(--text-secondary);
+    border: 1px solid rgba(161, 166, 186, 0.2);
 }
 
 .badge-overdue {
-    background: var(--overdue-bg);
-    color: var(--overdue-text);
-    border-color: rgba(244, 63, 94, 0.35);
+    background: var(--error-bg);
+    color: var(--error);
+    border-color: rgba(255, 114, 133, 0.35);
     font-weight: 700;
 }
 
@@ -663,145 +861,231 @@ button:hover {
 .action-btn {
     background: transparent;
     border: none;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     cursor: pointer;
     padding: 6px 8px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
     opacity: 0.75;
+    transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
 .action-btn:hover {
     opacity: 1;
+    background: var(--surface-hover);
     transform: none;
     box-shadow: none;
 }
 
-.edit-btn {
-    color: #3b82f6;
-}
-
 .edit-btn:hover {
-    background: rgba(59, 130, 246, 0.12);
-    color: #2563eb;
-}
-
-.delete-btn {
-    color: var(--danger);
+    color: var(--accent);
 }
 
 .delete-btn:hover {
-    background: rgba(244, 63, 94, 0.12);
-    color: #e11d48;
+    color: var(--error);
+    background: var(--error-bg);
 }
 
-/* Empty states */
+/* Empty States */
 .empty-task-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 32px 16px;
-    color: var(--muted);
-    gap: 8px;
+    padding: 40px 16px;
+    color: var(--text-secondary);
+    gap: 10px;
+    background: var(--surface-elevated);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
 }
 
 .empty-task-state i {
-    font-size: 2rem;
-    opacity: 0.5;
-    margin-bottom: 4px;
+    font-size: 2.2rem;
+    color: var(--accent);
+    opacity: 0.6;
 }
 
 .empty-task-state p {
-    margin: 0;
     font-size: 0.95rem;
+    color: var(--text-secondary);
 }
 
 .empty-task-state button {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    padding: 6px 14px;
+    margin-top: 6px;
     background: transparent;
     border: 1px solid var(--border);
-    color: var(--text);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    padding: 8px 16px;
 }
 
 .empty-task-state button:hover {
-    background: rgba(125, 125, 125, 0.1);
+    background: var(--surface-hover);
+    border-color: var(--accent);
 }
 
-/* Original Food / Checklist Item */
-.checklist-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border-radius: 10px;
-    background: transparent;
-}
-
-.checklist-item:hover {
-    background: rgba(125, 125, 125, 0.04);
-}
-
-.checklist-item.completed span {
-    color: var(--muted);
-    opacity: 0.8;
-    text-decoration: line-through;
-}
-
-.checklist-item input[type='checkbox'] {
-    width: 18px;
-    height: 18px;
-    accent-color: #ffb74d;
-    cursor: pointer;
-}
-
-.checklist-item span {
-    flex: 1;
-    cursor: pointer;
-    font-size: 0.95rem;
-}
-
-/* Verse of the day */
-.verse-display {
-    margin-top: 16px;
-    color: var(--text);
-    font-style: italic;
-    line-height: 1.6;
-    padding: 16px;
-    background: rgba(139, 92, 246, 0.1);
-    border-radius: 12px;
-    border-left: 4px solid var(--accent);
-}
-
-/* Controls */
+/* Controls / Clear buttons */
 .controls {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 16px;
+    gap: 10px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border-subtle);
 }
 
 .controls button {
     background: transparent;
     border: 1px solid var(--border);
-    color: var(--muted);
+    color: var(--text-secondary);
     padding: 8px 14px;
-    border-radius: 10px;
-    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
 }
 
 .controls button:hover {
-    background: rgba(125, 125, 125, 0.08);
-    color: var(--text);
-    border-color: var(--muted);
+    background: var(--surface-elevated);
+    color: var(--text-primary);
+    border-color: var(--border);
     transform: none;
     box-shadow: none;
 }
 
 /* ============================================================================
-   Edit Modal
+   10. Secondary Column: Personal Companion Cards
+   ============================================================================ */
+.workspace-companion {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.companion-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.companion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.companion-header h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.companion-header h2 i {
+    color: var(--accent);
+    font-size: 0.95rem;
+}
+
+.companion-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+}
+
+/* Verse Section */
+.input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.input-row button {
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
+.verse-display {
+    color: var(--text-primary);
+    font-style: italic;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    padding: 14px 16px;
+    background: var(--surface-elevated);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--accent);
+    position: relative;
+}
+
+/* Food & Routine Notes Checklist */
+.task-form {
+    display: flex;
+    gap: 8px;
+}
+
+.task-form button {
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
+.checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+}
+
+.checklist-item:hover {
+    background: var(--surface-hover);
+}
+
+.checklist-item input[type='checkbox'] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.checklist-item span {
+    flex: 1;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.checklist-item.completed span {
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+/* Daily Reflection */
+textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.55;
+    font-size: 0.9rem;
+}
+
+/* ============================================================================
+   11. Modal Dialog & Toast Alerts
    ============================================================================ */
 .modal {
     position: fixed;
@@ -825,19 +1109,19 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--modal-backdrop);
+    background: var(--backdrop-overlay);
     backdrop-filter: blur(4px);
 }
 
 .modal-content {
     position: relative;
-    background: var(--modal-bg);
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     padding: 24px;
     width: 90%;
     max-width: 480px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-elevated);
     z-index: 1001;
     animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -845,7 +1129,7 @@ button:hover {
 @keyframes modalPop {
     from {
         opacity: 0;
-        transform: scale(0.95);
+        transform: scale(0.96);
     }
     to {
         opacity: 1;
@@ -861,18 +1145,22 @@ button:hover {
 }
 
 .modal-header h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: var(--text);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
+.modal-header h3 i {
+    color: var(--accent);
+}
+
 .modal-close-btn {
     background: transparent;
     border: none;
-    color: var(--muted);
+    color: var(--text-muted);
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0 4px;
@@ -880,7 +1168,7 @@ button:hover {
 }
 
 .modal-close-btn:hover {
-    color: var(--text);
+    color: var(--text-primary);
     background: transparent;
     transform: none;
     box-shadow: none;
@@ -894,11 +1182,11 @@ button:hover {
 }
 
 .form-group label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: var(--muted);
+    color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
 }
 
 .form-row {
@@ -917,45 +1205,43 @@ button:hover {
 .btn-secondary {
     background: transparent;
     border: 1px solid var(--border);
-    color: var(--muted);
+    color: var(--text-secondary);
 }
 
 .btn-secondary:hover {
-    background: rgba(125, 125, 125, 0.1);
-    color: var(--text);
+    background: var(--surface-hover);
+    color: var(--text-primary);
     transform: none;
     box-shadow: none;
 }
 
 .btn-primary {
     background: var(--accent);
-    color: #ffffff;
+    color: #FFFFFF;
 }
 
 .btn-primary:hover {
     background: var(--accent-hover);
 }
 
-/* ============================================================================
-   Toast Notifications
-   ============================================================================ */
+/* Toast Notifications */
 .toast {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background: var(--card);
+    background: var(--surface);
     border: 1px solid var(--border);
-    color: var(--text);
+    color: var(--text-primary);
     padding: 12px 18px;
-    border-radius: 12px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-    font-size: 0.9rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-elevated);
+    font-size: 0.88rem;
     font-weight: 500;
     z-index: 2000;
     pointer-events: none;
     transform: translateY(20px);
     opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
 }
 
 .toast[hidden] {
@@ -968,11 +1254,11 @@ button:hover {
 }
 
 .toast-success {
-    border-left: 4px solid var(--accent-2);
+    border-left: 4px solid var(--success);
 }
 
 .toast-error {
-    border-left: 4px solid var(--danger);
+    border-left: 4px solid var(--error);
 }
 
 .toast-info {
@@ -980,18 +1266,39 @@ button:hover {
 }
 
 /* ============================================================================
-   Responsive Layout
+   12. Responsive Design (Desktop, Tablet, Mobile)
    ============================================================================ */
-@media (max-width: 860px) {
-    .grid {
+
+/* Tablet & Smaller Desktops (< 1024px) */
+@media (max-width: 1024px) {
+    .workspace-layout {
         grid-template-columns: 1fr;
     }
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
     }
-    .stat-progress-item {
+    .stat-progress-card {
         grid-column: span 2;
+    }
+}
+
+/* Mobile Screens (< 768px) */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 0 16px 36px;
+    }
+    .header-center {
+        display: none; /* Hide date greeting on small phone viewports to keep header clean */
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .stat-card {
+        padding: 8px 10px;
+    }
+    .task-meta-inputs {
+        grid-template-columns: 1fr;
     }
     .filter-controls {
         grid-template-columns: 1fr 1fr;
@@ -999,29 +1306,18 @@ button:hover {
     .reset-filters-btn {
         grid-column: span 2;
     }
-    .container {
-        padding: 0;
-    }
-    body {
-        padding: 20px 14px;
-    }
-    .task-meta-inputs {
-        grid-template-columns: 1fr;
-    }
     .form-row {
         grid-template-columns: 1fr;
     }
 }
 
-@media (max-width: 500px) {
-    .header-titles {
-        padding-left: 0;
-    }
-    header h1 {
-        font-size: 1.85rem;
-    }
+/* Compact Mobile (< 480px) */
+@media (max-width: 480px) {
     .stats-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
+    .stat-progress-card {
+        grid-column: span 1;
     }
     .filter-controls {
         grid-template-columns: 1fr;
@@ -1029,7 +1325,14 @@ button:hover {
     .reset-filters-btn {
         grid-column: span 1;
     }
-    .card {
-        padding: 18px 16px;
+    .task-input-group {
+        flex-direction: column;
+    }
+    .task-input-group button {
+        width: 100%;
+        padding: 10px;
+    }
+    .workspace-primary {
+        padding: 16px;
     }
 }

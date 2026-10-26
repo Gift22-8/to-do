@@ -3,224 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Productivity</title>
+    <title>Cadence | Personal Productivity Workspace</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-top">
-                <div class="header-titles">
-                    <h1>Personal Productivity</h1>
-                    <p class="subtitle">A daily personal diary</p>
+    <div class="app-wrapper">
+        <!-- Top Application Header -->
+        <header class="app-header">
+            <div class="header-container">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div class="brand-info">
+                        <h1 class="brand-title">Cadence</h1>
+                        <span class="brand-badge">Personal Workspace</span>
+                    </div>
                 </div>
-                <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-label="Toggle light or dark theme" title="Toggle theme">
-                    <i class="fa-solid fa-sun" id="themeIcon"></i>
-                </button>
+
+                <div class="header-center">
+                    <div class="greeting-wrapper">
+                        <span class="greeting-text" id="greetingText">Welcome back</span>
+                        <span class="greeting-date" id="currentDateDisplay">Today</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-label="Toggle light or dark theme" title="Toggle theme">
+                        <i class="fa-solid fa-sun" id="themeIcon"></i>
+                    </button>
+                </div>
             </div>
         </header>
 
-        <!-- Compact Productivity Dashboard -->
-        <section class="card dashboard-card" aria-label="Productivity statistics">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-label">Total Tasks</span>
-                    <span class="stat-value" id="statTotal">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Pending</span>
-                    <span class="stat-value stat-pending" id="statPending">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Completed</span>
-                    <span class="stat-value stat-completed" id="statCompleted">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Overdue</span>
-                    <span class="stat-value stat-overdue" id="statOverdue">0</span>
-                </div>
-                <div class="stat-item stat-progress-item">
-                    <div class="stat-progress-header">
-                        <span class="stat-label">Progress</span>
-                        <span class="stat-value" id="statPercentage">0%</span>
-                    </div>
-                    <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Task completion progress">
-                        <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <main class="grid">
-            <section class="card verse">
-                <h2><i class="fa-solid fa-book-open" style="color: var(--accent);"></i> Verse of the Day</h2>
-                <div class="input-row">
-                    <input id="verseInput" placeholder="Write a verse..." aria-label="Verse input">
-                    <button id="saveVerseBtn"><i class="fa-solid fa-floppy-disk"></i> Save</button>
-                </div>
-                <div id="verseContainer"></div>
-            </section>
-
-            <section class="card todo">
-                <div class="card-header">
-                    <h2><i class="fa-solid fa-list-check" style="color: var(--accent-2);"></i> To-Do List</h2>
-                </div>
-
-                <form id="taskForm" class="task-form-enhanced" aria-label="Add a task">
-                    <div class="task-input-group">
-                        <input id="taskInput" placeholder="What needs to be done?" autocomplete="off" maxlength="150" aria-label="Task title">
-                        <button id="addTaskBtn" type="submit"><i class="fa-solid fa-plus"></i> Add</button>
-                    </div>
-                    <div class="task-meta-inputs">
-                        <div class="meta-field">
-                            <label for="taskCategory"><i class="fa-solid fa-folder"></i> Category</label>
-                            <select id="taskCategory" aria-label="Task category">
-                                <option value="Personal">Personal</option>
-                                <option value="University">University</option>
-                                <option value="Work">Work</option>
-                                <option value="Health">Health</option>
-                            </select>
+        <!-- Main Workspace Container -->
+        <div class="app-container">
+            <!-- Compact Productivity Dashboard Strip -->
+            <section class="card dashboard-card" aria-label="Productivity overview">
+                <div class="stats-grid">
+                    <div class="stat-card stat-total">
+                        <div class="stat-icon-wrap">
+                            <i class="fa-solid fa-list-check"></i>
                         </div>
-                        <div class="meta-field">
-                            <label for="taskPriority"><i class="fa-solid fa-flag"></i> Priority</label>
-                            <select id="taskPriority" aria-label="Task priority">
-                                <option value="low">Low</option>
-                                <option value="medium" selected>Medium</option>
-                                <option value="high">High</option>
-                            </select>
-                        </div>
-                        <div class="meta-field">
-                            <label for="taskDueDate"><i class="fa-solid fa-calendar"></i> Due Date</label>
-                            <input type="date" id="taskDueDate" aria-label="Task due date">
+                        <div class="stat-content">
+                            <span class="stat-label">Total Tasks</span>
+                            <span class="stat-value" id="statTotal">0</span>
                         </div>
                     </div>
-                    <div id="taskFormFeedback" class="form-feedback" role="alert" aria-live="polite"></div>
-                </form>
 
-                <!-- Search, Filter & Sort Toolbar -->
-                <div class="filter-toolbar" aria-label="Search and filter tasks">
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" id="searchInput" placeholder="Search tasks..." aria-label="Search tasks">
-                        <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear search" aria-label="Clear search" hidden>&times;</button>
+                    <div class="stat-card stat-pending">
+                        <div class="stat-icon-wrap">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Pending</span>
+                            <span class="stat-value stat-pending" id="statPending">0</span>
+                        </div>
                     </div>
-                    <div class="filter-controls">
-                        <div class="filter-group">
-                            <label for="filterStatus">Status</label>
-                            <select id="filterStatus" aria-label="Filter tasks by status">
-                                <option value="all">All</option>
-                                <option value="pending">Pending</option>
-                                <option value="completed">Completed</option>
-                                <option value="overdue">Overdue</option>
-                            </select>
+
+                    <div class="stat-card stat-completed">
+                        <div class="stat-icon-wrap">
+                            <i class="fa-solid fa-circle-check"></i>
                         </div>
-                        <div class="filter-group">
-                            <label for="filterCategory">Category</label>
-                            <select id="filterCategory" aria-label="Filter tasks by category">
-                                <option value="all">All</option>
-                                <option value="Personal">Personal</option>
-                                <option value="University">University</option>
-                                <option value="Work">Work</option>
-                                <option value="Health">Health</option>
-                            </select>
+                        <div class="stat-content">
+                            <span class="stat-label">Completed</span>
+                            <span class="stat-value stat-completed" id="statCompleted">0</span>
                         </div>
-                        <div class="filter-group">
-                            <label for="filterPriority">Priority</label>
-                            <select id="filterPriority" aria-label="Filter tasks by priority">
-                                <option value="all">All</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label for="sortBy">Sort By</label>
-                            <select id="sortBy" aria-label="Sort tasks">
-                                <option value="newest">Newest</option>
-                                <option value="dueDate">Due Date</option>
-                                <option value="priority">Priority</option>
-                                <option value="alphabetical">A - Z</option>
-                            </select>
-                        </div>
-                        <button type="button" id="resetFiltersBtn" class="reset-filters-btn" title="Reset all filters" aria-label="Reset all filters">
-                            <i class="fa-solid fa-rotate-left"></i> Reset
-                        </button>
                     </div>
-                </div>
 
-                <ul id="taskList" class="task-list" aria-live="polite"></ul>
+                    <div class="stat-card stat-overdue">
+                        <div class="stat-icon-wrap">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Overdue</span>
+                            <span class="stat-value stat-overdue" id="statOverdue">0</span>
+                        </div>
+                    </div>
 
-                <div class="controls">
-                    <button id="clearCompletedBtn"><i class="fa-solid fa-check-double"></i> Clear Completed</button>
-                    <button id="clearAllBtn"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+                    <div class="stat-card stat-progress-card">
+                        <div class="stat-progress-header">
+                            <span class="stat-label">Completion</span>
+                            <span class="stat-value" id="statPercentage">0%</span>
+                        </div>
+                        <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Task completion progress">
+                            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <section class="card notes">
-                <h2><i class="fa-solid fa-apple-whole" style="color: #ffb74d;"></i> Food / Routine Notes</h2>
-                <form id="foodForm" class="task-form" aria-label="Add food note">
-                    <input id="foodInput" placeholder="Add food or routine..." autocomplete="off">
-                    <button id="addFoodBtn" type="submit"><i class="fa-solid fa-plus"></i> Add</button>
-                </form>
-                <ul id="foodList" class="task-list" aria-live="polite"></ul>
-            </section>
-
-            <section class="card reflection">
-                <h2><i class="fa-solid fa-moon" style="color: #64b5f6;"></i> Daily Reflection</h2>
-                <textarea id="dailyReflection" placeholder="How was your day?" rows="6"></textarea>
-            </section>
-        </main>
-    </div>
-
-    <!-- Edit Task Modal -->
-    <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" hidden>
-        <div class="modal-backdrop" id="editModalBackdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="editModalTitle"><i class="fa-solid fa-pen-to-square"></i> Edit Task</h3>
-                <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close edit dialog">&times;</button>
-            </div>
-            <form id="editTaskForm">
-                <input type="hidden" id="editTaskId">
-                <div class="form-group">
-                    <label for="editTaskInput">Task Title</label>
-                    <input id="editTaskInput" type="text" maxlength="150" required placeholder="Enter task title">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="editTaskCategory">Category</label>
-                        <select id="editTaskCategory">
-                            <option value="Personal">Personal</option>
-                            <option value="University">University</option>
-                            <option value="Work">Work</option>
-                            <option value="Health">Health</option>
-                        </select>
+            <!-- Main Workspace: Asymmetric Layout -->
+            <main class="workspace-layout">
+                <!-- Primary Column: Task Management Center (Primary Focus) -->
+                <section class="card workspace-primary" aria-label="Task Management">
+                    <div class="section-heading">
+                        <div class="section-title-wrap">
+                            <h2><i class="fa-solid fa-circle-dot section-icon"></i> Tasks & Objectives</h2>
+                            <p class="section-desc">Manage, prioritize, and track your daily priorities</p>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editTaskPriority">Priority</label>
-                        <select id="editTaskPriority">
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
+
+                    <!-- Enhanced Task Creation Form -->
+                    <form id="taskForm" class="task-form-enhanced" aria-label="Add a task">
+                        <div class="task-input-group">
+                            <input id="taskInput" placeholder="What needs to be done?" autocomplete="off" maxlength="150" aria-label="Task title">
+                            <button id="addTaskBtn" type="submit"><i class="fa-solid fa-plus"></i> Add Task</button>
+                        </div>
+
+                        <div class="task-meta-inputs">
+                            <div class="meta-field">
+                                <label for="taskCategory"><i class="fa-solid fa-folder"></i> Category</label>
+                                <select id="taskCategory" aria-label="Task category">
+                                    <option value="Personal">Personal</option>
+                                    <option value="University">University</option>
+                                    <option value="Work">Work</option>
+                                    <option value="Health">Health</option>
+                                </select>
+                            </div>
+                            <div class="meta-field">
+                                <label for="taskPriority"><i class="fa-solid fa-flag"></i> Priority</label>
+                                <select id="taskPriority" aria-label="Task priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div class="meta-field">
+                                <label for="taskDueDate"><i class="fa-solid fa-calendar"></i> Due Date</label>
+                                <input type="date" id="taskDueDate" aria-label="Task due date">
+                            </div>
+                        </div>
+                        <div id="taskFormFeedback" class="form-feedback" role="alert" aria-live="polite"></div>
+                    </form>
+
+                    <!-- Search, Filter & Sort Toolbar -->
+                    <div class="filter-toolbar" aria-label="Search and filter tasks">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="searchInput" placeholder="Search tasks..." aria-label="Search tasks">
+                            <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear search" aria-label="Clear search" hidden>&times;</button>
+                        </div>
+                        <div class="filter-controls">
+                            <div class="filter-group">
+                                <label for="filterStatus">Status</label>
+                                <select id="filterStatus" aria-label="Filter tasks by status">
+                                    <option value="all">All</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="overdue">Overdue</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="filterCategory">Category</label>
+                                <select id="filterCategory" aria-label="Filter tasks by category">
+                                    <option value="all">All</option>
+                                    <option value="Personal">Personal</option>
+                                    <option value="University">University</option>
+                                    <option value="Work">Work</option>
+                                    <option value="Health">Health</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="filterPriority">Priority</label>
+                                <select id="filterPriority" aria-label="Filter tasks by priority">
+                                    <option value="all">All</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="sortBy">Sort By</label>
+                                <select id="sortBy" aria-label="Sort tasks">
+                                    <option value="newest">Newest</option>
+                                    <option value="dueDate">Due Date</option>
+                                    <option value="priority">Priority</option>
+                                    <option value="alphabetical">A - Z</option>
+                                </select>
+                            </div>
+                            <button type="button" id="resetFiltersBtn" class="reset-filters-btn" title="Reset all filters" aria-label="Reset all filters">
+                                <i class="fa-solid fa-rotate-left"></i> Reset
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="editTaskDueDate">Due Date</label>
-                    <input type="date" id="editTaskDueDate">
-                </div>
-                <div id="editFormFeedback" class="form-feedback" role="alert" aria-live="polite"></div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondary" id="cancelEditBtn">Cancel</button>
-                    <button type="submit" class="btn-primary" id="saveEditBtn"><i class="fa-solid fa-check"></i> Save Changes</button>
-                </div>
-            </form>
+
+                    <!-- Task List Items -->
+                    <ul id="taskList" class="task-list" aria-live="polite"></ul>
+
+                    <!-- Controls -->
+                    <div class="controls">
+                        <button id="clearCompletedBtn" type="button"><i class="fa-solid fa-check-double"></i> Clear Completed</button>
+                        <button id="clearAllBtn" type="button"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+                    </div>
+                </section>
+
+                <!-- Secondary Column: Personal Companion Features -->
+                <aside class="workspace-companion" aria-label="Personal routines and reflections">
+                    <!-- Verse of the Day -->
+                    <section class="card companion-card verse" aria-label="Verse of the day">
+                        <div class="companion-header">
+                            <h2><i class="fa-solid fa-book-open"></i> Verse of the Day</h2>
+                            <span class="companion-badge">Inspiration</span>
+                        </div>
+                        <div class="input-row">
+                            <input id="verseInput" placeholder="Write a verse or quote..." aria-label="Verse input">
+                            <button id="saveVerseBtn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                        </div>
+                        <div id="verseContainer"></div>
+                    </section>
+
+                    <!-- Food & Routine Notes -->
+                    <section class="card companion-card notes" aria-label="Food and routine notes">
+                        <div class="companion-header">
+                            <h2><i class="fa-solid fa-apple-whole"></i> Food / Routine</h2>
+                            <span class="companion-badge">Habits</span>
+                        </div>
+                        <form id="foodForm" class="task-form" aria-label="Add food note">
+                            <input id="foodInput" placeholder="Add food or routine..." autocomplete="off">
+                            <button id="addFoodBtn" type="submit"><i class="fa-solid fa-plus"></i> Add</button>
+                        </form>
+                        <ul id="foodList" class="task-list checklist" aria-live="polite"></ul>
+                    </section>
+
+                    <!-- Daily Reflection -->
+                    <section class="card companion-card reflection" aria-label="Daily reflection">
+                        <div class="companion-header">
+                            <h2><i class="fa-solid fa-moon"></i> Daily Reflection</h2>
+                            <span class="companion-badge">Auto-saved</span>
+                        </div>
+                        <textarea id="dailyReflection" placeholder="How was your day? Reflect on your achievements, habits, or thoughts..." rows="6"></textarea>
+                    </section>
+                </aside>
+            </main>
         </div>
-    </div>
 
-    <!-- Notification Toast -->
-    <div id="toastNotification" class="toast" role="status" aria-live="polite" hidden></div>
+        <!-- Edit Task Modal -->
+        <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" hidden>
+            <div class="modal-backdrop" id="editModalBackdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="editModalTitle"><i class="fa-solid fa-pen-to-square"></i> Edit Task</h3>
+                    <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close edit dialog">&times;</button>
+                </div>
+                <form id="editTaskForm">
+                    <input type="hidden" id="editTaskId">
+                    <div class="form-group">
+                        <label for="editTaskInput">Task Title</label>
+                        <input id="editTaskInput" type="text" maxlength="150" required placeholder="Enter task title">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editTaskCategory">Category</label>
+                            <select id="editTaskCategory">
+                                <option value="Personal">Personal</option>
+                                <option value="University">University</option>
+                                <option value="Work">Work</option>
+                                <option value="Health">Health</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTaskPriority">Priority</label>
+                            <select id="editTaskPriority">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTaskDueDate">Due Date</label>
+                        <input type="date" id="editTaskDueDate">
+                    </div>
+                    <div id="editFormFeedback" class="form-feedback" role="alert" aria-live="polite"></div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="cancelEditBtn">Cancel</button>
+                        <button type="submit" class="btn-primary" id="saveEditBtn"><i class="fa-solid fa-check"></i> Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="toastNotification" class="toast" role="status" aria-live="polite" hidden></div>
+    </div>
 
     <script src="script.js"></script>
 </body>

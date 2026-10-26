@@ -1,8 +1,8 @@
-# Personal Productivity Dashboard & Diary
+# Cadence | Personal Productivity Workspace & Diary
 
 A responsive, client-side personal productivity application built with semantic **HTML5**, modern **CSS3**, and modular **vanilla JavaScript (ES6)**.
 
-This project upgrades a daily to-do list into a structured task management system and personal diary, featuring real-time statistics, search and filtering, priority tags, due date tracking with overdue alerts, light and dark themes, and persistent browser storage.
+This project features a premium, calm dark interface (with an intentional complementary light theme), real-time statistics, multi-dimensional search and filtering, priority tags, due date tracking with overdue alerts, personal habit and reflection journals, and persistent browser storage.
 
 ---
 
