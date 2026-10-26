@@ -1,10 +1,14 @@
 // Personal Productivity Application
 // Core Modules: Safe Storage, Task CRUD, Productivity Dashboard, Search/Filter/Sort,
-// Personal Features (Verse of the Day, Food Notes, Daily Reflection)
+// Dark/Light Theme System, Personal Features (Verse of the Day, Food Notes, Daily Reflection)
 
 // ============================================================================
 // 1. DOM Elements
 // ============================================================================
+
+// --- Theme Switcher ---
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIcon = document.getElementById('themeIcon');
 
 // --- Dashboard Elements ---
 const statTotal = document.getElementById('statTotal');
@@ -69,6 +73,7 @@ const toastNotification = document.getElementById('toastNotification');
 
 const TASKS_KEY = 'prod-tasks-v1';
 const TASKS_BACKUP_KEY = 'prod-tasks-v1-backup';
+const THEME_KEY = 'prod-theme-v1';
 const VERSE_KEY = 'prod-verse-v2';
 const FOOD_KEY = 'prod-food-v2';
 const REFLECT_KEY = 'prod-reflect-v1';
@@ -321,7 +326,6 @@ function getFilteredTasks(taskList, state) {
     const priorityWeight = { high: 3, medium: 2, low: 1 };
     result.sort((a, b) => {
         if (state.sortBy === 'dueDate') {
-            // Tasks with due date come first; sort ascending
             if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate);
             if (a.dueDate) return -1;
             if (b.dueDate) return 1;
@@ -335,7 +339,7 @@ function getFilteredTasks(taskList, state) {
         if (state.sortBy === 'alphabetical') {
             return a.text.localeCompare(b.text, undefined, { sensitivity: 'base' });
         }
-        // Default: 'newest' (most recently created first)
+        // Default: 'newest'
         return (b.createdAt || b.id) - (a.createdAt || a.id);
     });
 
@@ -640,12 +644,9 @@ function createTaskElement(task) {
  * Also keeps dashboard statistics updated.
  */
 function renderTasks() {
-    // Keep dashboard stats in sync with canonical tasks data
     updateDashboardStats();
-
     taskList.innerHTML = '';
 
-    // If master task array is empty
     if (tasks.length === 0) {
         const emptyLi = document.createElement('li');
         emptyLi.className = 'empty-task-state';
@@ -657,10 +658,8 @@ function renderTasks() {
         return;
     }
 
-    // Apply filtering and sorting
     const visibleTasks = getFilteredTasks(tasks, filterState);
 
-    // If filters returned zero matching tasks
     if (visibleTasks.length === 0) {
         const noMatchLi = document.createElement('li');
         noMatchLi.className = 'empty-task-state';
@@ -837,8 +836,72 @@ function saveReflection() {
 }
 
 // ============================================================================
-// 10. Event Listeners & Keyboard Accessibility
+// 10. Theme Management (Light / Dark)
 // ============================================================================
+
+/**
+ * Applies the selected theme to the document and updates toggle icon.
+ * @param {'dark'|'light'} theme
+ */
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        if (themeIcon) {
+            themeIcon.className = 'fa-solid fa-moon';
+        }
+        if (themeToggleBtn) {
+            themeToggleBtn.setAttribute('title', 'Switch to dark theme');
+            themeToggleBtn.setAttribute('aria-label', 'Switch to dark theme');
+        }
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (themeIcon) {
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+        if (themeToggleBtn) {
+            themeToggleBtn.setAttribute('title', 'Switch to light theme');
+            themeToggleBtn.setAttribute('aria-label', 'Switch to light theme');
+        }
+    }
+}
+
+/**
+ * Toggles theme and persists choice in localStorage.
+ */
+function toggleTheme() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const newTheme = isLight ? 'dark' : 'light';
+
+    try {
+        localStorage.setItem(THEME_KEY, newTheme);
+    } catch (err) {
+        console.warn('Could not save theme preference:', err);
+    }
+
+    applyTheme(newTheme);
+    showToast(`Switched to ${newTheme} theme`, 'info');
+}
+
+/**
+ * Loads saved theme preference from storage on start.
+ */
+function loadTheme() {
+    try {
+        const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+        applyTheme(savedTheme);
+    } catch (err) {
+        applyTheme('dark');
+    }
+}
+
+// ============================================================================
+// 11. Event Listeners & Keyboard Accessibility
+// ============================================================================
+
+// --- Theme Toggle ---
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleTheme);
+}
 
 // --- Main Task Form ---
 taskForm.addEventListener('submit', (e) => {
@@ -849,7 +912,6 @@ taskForm.addEventListener('submit', (e) => {
 clearCompletedBtn.addEventListener('click', clearCompleted);
 clearAllBtn.addEventListener('click', clearAllTasks);
 
-// Clear form validation feedback on input
 taskInput.addEventListener('input', () => {
     if (taskFormFeedback.textContent) {
         setFormFeedback(taskFormFeedback, '');
@@ -919,7 +981,6 @@ closeEditModalBtn.addEventListener('click', closeEditModal);
 cancelEditBtn.addEventListener('click', closeEditModal);
 editModalBackdrop.addEventListener('click', closeEditModal);
 
-// Close modal on Escape key press
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !editModal.hidden) {
         closeEditModal();
@@ -941,10 +1002,11 @@ foodForm.addEventListener('submit', (e) => {
 dailyReflection.addEventListener('input', saveReflection);
 
 // ============================================================================
-// 11. Application Initialization
+// 12. Application Initialization
 // ============================================================================
 
 function initializeApp() {
+    loadTheme();
     loadTasks();
     loadVerses();
     loadFoods();
@@ -955,7 +1017,6 @@ function initializeApp() {
     renderFoods();
 }
 
-// Run when the DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeApp);
 } else {

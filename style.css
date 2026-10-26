@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* ============================================================================
+   Design Tokens & Theme Variables
+   ============================================================================ */
+
+/* Dark Theme (Default) */
 :root {
     --bg: #0f172a;
     --card: #1e293b;
@@ -20,18 +25,61 @@
     --priority-low: #10b981;
     --overdue-bg: rgba(244, 63, 94, 0.15);
     --overdue-text: #fda4af;
+
+    /* Theme-specific element colors */
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --select-bg: #0f172a;
+    --select-option-bg: #1e293b;
+    --modal-bg: #1e293b;
+    --modal-backdrop: rgba(15, 23, 42, 0.75);
+    --item-bg: rgba(255, 255, 255, 0.03);
+    --item-hover-bg: rgba(255, 255, 255, 0.05);
+    --progress-track: rgba(255, 255, 255, 0.08);
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --card-hover: #f1f5f9;
+    --muted: #64748b;
+    --accent: #7c3aed;
+    --accent-hover: #6d28d9;
+    --accent-2: #0d9488;
+    --accent-2-hover: #0f766e;
+    --danger: #e11d48;
+    --danger-hover: #be123c;
+    --text: #0f172a;
+    --border: rgba(15, 23, 42, 0.1);
+
+    /* Priority & Status Colors (adjusted contrast) */
+    --priority-high: #e11d48;
+    --priority-medium: #d97706;
+    --priority-low: #059669;
+    --overdue-bg: rgba(225, 29, 72, 0.12);
+    --overdue-text: #be123c;
+
+    /* Theme-specific element colors */
+    --input-bg: #f8fafc;
+    --select-bg: #ffffff;
+    --select-option-bg: #ffffff;
+    --modal-bg: #ffffff;
+    --modal-backdrop: rgba(15, 23, 42, 0.45);
+    --item-bg: #f8fafc;
+    --item-hover-bg: #f1f5f9;
+    --progress-track: rgba(15, 23, 42, 0.08);
 }
 
 * {
     box-sizing: border-box;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 body {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--bg);
-    background-image: radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
-                      radial-gradient(circle at 85% 30%, rgba(20, 184, 166, 0.15), transparent 25%);
+    background-image: radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.12), transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(20, 184, 166, 0.12), transparent 25%);
     background-attachment: fixed;
     color: var(--text);
     margin: 0;
@@ -47,12 +95,23 @@ body {
     max-width: 1000px;
 }
 
+/* ============================================================================
+   Header & Theme Switcher
+   ============================================================================ */
 header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     margin-bottom: 24px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-titles {
+    flex: 1;
     text-align: center;
+    padding-left: 42px; /* Balance theme toggle button width for true center */
 }
 
 header h1 {
@@ -65,10 +124,47 @@ header h1 {
     -webkit-text-fill-color: transparent;
 }
 
+[data-theme="light"] header h1 {
+    background: linear-gradient(to right, #0f172a, #475569);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .subtitle {
-    margin: 8px 0 0 0;
+    margin: 6px 0 0 0;
     color: var(--muted);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+}
+
+.theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: #fcd34d;
+    font-size: 1.15rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: rotate(20deg) scale(1.05);
+}
+
+[data-theme="light"] .theme-toggle-btn {
+    background: #f1f5f9;
+    color: #6366f1;
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+    background: #e2e8f0;
 }
 
 /* ============================================================================
@@ -109,7 +205,11 @@ header h1 {
 }
 
 .stat-pending {
-    color: #93c5fd;
+    color: #60a5fa;
+}
+
+[data-theme="light"] .stat-pending {
+    color: #2563eb;
 }
 
 .stat-completed {
@@ -135,7 +235,7 @@ header h1 {
 .progress-bar-container {
     width: 100%;
     height: 10px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--progress-track);
     border-radius: 999px;
     overflow: hidden;
     position: relative;
@@ -161,7 +261,7 @@ header h1 {
     background: var(--card);
     padding: 24px;
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
     border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
@@ -169,7 +269,7 @@ header h1 {
 
 .card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 24px -4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 12px 20px -4px rgba(0, 0, 0, 0.15);
 }
 
 .card h2 {
@@ -178,7 +278,7 @@ header h1 {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #e2e8f0;
+    color: var(--text);
 }
 
 .input-row {
@@ -191,7 +291,7 @@ input[type='text'], input[type='date'], input, select, textarea {
     padding: 12px 14px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--input-bg);
     color: var(--text);
     outline: none;
     font-family: inherit;
@@ -205,17 +305,21 @@ input:focus, select:focus, textarea:focus {
 
 select {
     cursor: pointer;
-    background-color: #0f172a;
+    background-color: var(--select-bg);
 }
 
 select option {
-    background-color: #1e293b;
-    color: #f8fafc;
+    background-color: var(--select-option-bg);
+    color: var(--text);
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(0.8);
     cursor: pointer;
+}
+
+[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: none;
 }
 
 textarea {
@@ -267,7 +371,7 @@ button:hover {
     flex-direction: column;
     gap: 12px;
     margin-bottom: 16px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(125, 125, 125, 0.04);
     border: 1px solid var(--border);
     padding: 14px;
     border-radius: 14px;
@@ -340,7 +444,7 @@ button:hover {
     gap: 10px;
     margin-bottom: 16px;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(125, 125, 125, 0.03);
     border: 1px solid var(--border);
     border-radius: 12px;
 }
@@ -425,7 +529,7 @@ button:hover {
 }
 
 .reset-filters-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(125, 125, 125, 0.1);
     color: var(--text);
     border-color: var(--muted);
     transform: none;
@@ -451,13 +555,13 @@ button:hover {
     gap: 12px;
     padding: 12px 14px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--item-bg);
     border: 1px solid var(--border);
 }
 
 .task-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: var(--item-hover-bg);
+    border-color: rgba(125, 125, 125, 0.25);
 }
 
 .task-item input[type='checkbox'] {
@@ -509,39 +613,43 @@ button:hover {
 }
 
 .badge-category {
-    background: rgba(139, 92, 246, 0.15);
+    background: rgba(139, 92, 246, 0.12);
+    color: #7c3aed;
+    border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+[data-theme="dark"] .badge-category {
     color: #c4b5fd;
-    border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
 .badge-priority-high {
-    background: rgba(244, 63, 94, 0.15);
-    color: #fda4af;
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: rgba(244, 63, 94, 0.12);
+    color: var(--priority-high);
+    border: 1px solid rgba(244, 63, 94, 0.25);
 }
 
 .badge-priority-medium {
-    background: rgba(245, 158, 11, 0.15);
-    color: #fcd34d;
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--priority-medium);
+    border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
 .badge-priority-low {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--priority-low);
+    border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .badge-due {
     background: rgba(148, 163, 184, 0.12);
     color: var(--muted);
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.25);
 }
 
 .badge-overdue {
     background: var(--overdue-bg);
     color: var(--overdue-text);
-    border-color: rgba(244, 63, 94, 0.4);
+    border-color: rgba(244, 63, 94, 0.35);
     font-weight: 700;
 }
 
@@ -559,7 +667,7 @@ button:hover {
     cursor: pointer;
     padding: 6px 8px;
     border-radius: 8px;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
 .action-btn:hover {
@@ -569,12 +677,12 @@ button:hover {
 }
 
 .edit-btn {
-    color: #93c5fd;
+    color: #3b82f6;
 }
 
 .edit-btn:hover {
     background: rgba(59, 130, 246, 0.12);
-    color: #60a5fa;
+    color: #2563eb;
 }
 
 .delete-btn {
@@ -583,7 +691,7 @@ button:hover {
 
 .delete-btn:hover {
     background: rgba(244, 63, 94, 0.12);
-    color: #fb7185;
+    color: #e11d48;
 }
 
 /* Empty states */
@@ -619,7 +727,7 @@ button:hover {
 }
 
 .empty-task-state button:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(125, 125, 125, 0.1);
 }
 
 /* Original Food / Checklist Item */
@@ -633,7 +741,7 @@ button:hover {
 }
 
 .checklist-item:hover {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(125, 125, 125, 0.04);
 }
 
 .checklist-item.completed span {
@@ -658,7 +766,7 @@ button:hover {
 /* Verse of the day */
 .verse-display {
     margin-top: 16px;
-    color: #e2e8f0;
+    color: var(--text);
     font-style: italic;
     line-height: 1.6;
     padding: 16px;
@@ -685,7 +793,7 @@ button:hover {
 }
 
 .controls button:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(125, 125, 125, 0.08);
     color: var(--text);
     border-color: var(--muted);
     transform: none;
@@ -717,19 +825,19 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.75);
+    background: var(--modal-backdrop);
     backdrop-filter: blur(4px);
 }
 
 .modal-content {
     position: relative;
-    background: #1e293b;
+    background: var(--modal-bg);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 24px;
     width: 90%;
     max-width: 480px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
     z-index: 1001;
     animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -755,7 +863,7 @@ button:hover {
 .modal-header h3 {
     margin: 0;
     font-size: 1.2rem;
-    color: #f8fafc;
+    color: var(--text);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -772,7 +880,7 @@ button:hover {
 }
 
 .modal-close-btn:hover {
-    color: #f8fafc;
+    color: var(--text);
     background: transparent;
     transform: none;
     box-shadow: none;
@@ -813,7 +921,7 @@ button:hover {
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(125, 125, 125, 0.1);
     color: var(--text);
     transform: none;
     box-shadow: none;
@@ -835,12 +943,12 @@ button:hover {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background: #1e293b;
+    background: var(--card);
     border: 1px solid var(--border);
-    color: #f8fafc;
+    color: var(--text);
     padding: 12px 18px;
     border-radius: 12px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
     font-size: 0.9rem;
     font-weight: 500;
     z-index: 2000;
@@ -906,8 +1014,11 @@ button:hover {
 }
 
 @media (max-width: 500px) {
+    .header-titles {
+        padding-left: 0;
+    }
     header h1 {
-        font-size: 2rem;
+        font-size: 1.85rem;
     }
     .stats-grid {
         grid-template-columns: 1fr 1fr;
