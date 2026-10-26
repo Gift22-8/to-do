@@ -25,12 +25,43 @@
             </section>
 
             <section class="card todo">
-                <h2><i class="fa-solid fa-list-check" style="color: var(--accent-2);"></i> To-Do List</h2>
-                <form id="taskForm" class="task-form" aria-label="Add task">
-                    <input id="taskInput" placeholder="Add a task" autocomplete="off">
-                    <button id="addTaskBtn" type="submit"><i class="fa-solid fa-plus"></i> Add</button>
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-list-check" style="color: var(--accent-2);"></i> To-Do List</h2>
+                </div>
+
+                <form id="taskForm" class="task-form-enhanced" aria-label="Add a task">
+                    <div class="task-input-group">
+                        <input id="taskInput" placeholder="What needs to be done?" autocomplete="off" maxlength="150" aria-label="Task title">
+                        <button id="addTaskBtn" type="submit"><i class="fa-solid fa-plus"></i> Add</button>
+                    </div>
+                    <div class="task-meta-inputs">
+                        <div class="meta-field">
+                            <label for="taskCategory"><i class="fa-solid fa-folder"></i> Category</label>
+                            <select id="taskCategory" aria-label="Task category">
+                                <option value="Personal">Personal</option>
+                                <option value="University">University</option>
+                                <option value="Work">Work</option>
+                                <option value="Health">Health</option>
+                            </select>
+                        </div>
+                        <div class="meta-field">
+                            <label for="taskPriority"><i class="fa-solid fa-flag"></i> Priority</label>
+                            <select id="taskPriority" aria-label="Task priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <div class="meta-field">
+                            <label for="taskDueDate"><i class="fa-solid fa-calendar"></i> Due Date</label>
+                            <input type="date" id="taskDueDate" aria-label="Task due date">
+                        </div>
+                    </div>
+                    <div id="taskFormFeedback" class="form-feedback" role="alert" aria-live="polite"></div>
                 </form>
+
                 <ul id="taskList" class="task-list" aria-live="polite"></ul>
+
                 <div class="controls">
                     <button id="clearCompletedBtn"><i class="fa-solid fa-check-double"></i> Clear Completed</button>
                     <button id="clearAllBtn"><i class="fa-solid fa-trash-can"></i> Clear All</button>
@@ -52,6 +83,55 @@
             </section>
         </main>
     </div>
+
+    <!-- Edit Task Modal -->
+    <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" hidden>
+        <div class="modal-backdrop" id="editModalBackdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="editModalTitle"><i class="fa-solid fa-pen-to-square"></i> Edit Task</h3>
+                <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close edit dialog">&times;</button>
+            </div>
+            <form id="editTaskForm">
+                <input type="hidden" id="editTaskId">
+                <div class="form-group">
+                    <label for="editTaskInput">Task Title</label>
+                    <input id="editTaskInput" type="text" maxlength="150" required placeholder="Enter task title">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTaskCategory">Category</label>
+                        <select id="editTaskCategory">
+                            <option value="Personal">Personal</option>
+                            <option value="University">University</option>
+                            <option value="Work">Work</option>
+                            <option value="Health">Health</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTaskPriority">Priority</label>
+                        <select id="editTaskPriority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskDueDate">Due Date</label>
+                    <input type="date" id="editTaskDueDate">
+                </div>
+                <div id="editFormFeedback" class="form-feedback" role="alert" aria-live="polite"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelEditBtn">Cancel</button>
+                    <button type="submit" class="btn-primary" id="saveEditBtn"><i class="fa-solid fa-check"></i> Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toastNotification" class="toast" role="status" aria-live="polite" hidden></div>
 
     <script src="script.js"></script>
 </body>
