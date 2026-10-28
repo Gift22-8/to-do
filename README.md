@@ -1,8 +1,8 @@
-# Cadence | Personal Productivity Workspace & Diary
+# Bloom | Grow a little every day
 
-A responsive, client-side personal productivity application built with semantic **HTML5**, modern **CSS3**, and modular **vanilla JavaScript (ES6)**.
+A calm, responsive, client-side personal productivity application built with semantic **HTML5**, modern **CSS3**, and modular **vanilla JavaScript (ES6)**.
 
-This project features a premium, calm dark interface (with an intentional complementary light theme), real-time statistics, multi-dimensional search and filtering, priority tags, due date tracking with overdue alerts, personal habit and reflection journals, and persistent browser storage.
+Bloom features a distinctive, minimalist dark interface (with an intentional complementary light theme), an under-stated daily progress tracker, multi-dimensional search and filtering, priority tags, due date tracking with overdue alerts, habit checklists, personal reflection journals, and persistent browser storage.
 
 ---
 
